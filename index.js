@@ -1,7 +1,7 @@
 var http = require('http');
 var traceroute = require('traceroute');
 var geoip = require('geoip-lite');
-var prom = require('promise')
+var Promise = require('promise');
 var request = require('request');
 
 var sys = require('sys');
@@ -12,7 +12,7 @@ var geo = [];
 
   function a(){
     var x=[];
-    traceroute.trace("flipkart.com", function(err, hops) {
+    traceroute.trace("facebook.com", function(err, hops) {
         if (!err) {
             for(i in hops){
               //console.log(hops[i],"a");
