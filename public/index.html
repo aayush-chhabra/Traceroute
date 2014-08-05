@@ -10,6 +10,7 @@
         var app = angular.module('myApp', ['ngMap']);
         var data;
 
+        var forLines = [];
 
         app.controller('mapController', function($scope, $http, $interval) {
 
@@ -29,8 +30,6 @@
                 }
 
                 $scope.GenerateMapMarkers = function() {
-                    var d = new Date(); //To show marker location changes over time
-                    $scope.date = d.toLocaleString();
                     data = JSON.parse(data);
                     for (i = 0; i < data.length; i++) {
                         var lat = data[i][0];
@@ -42,8 +41,67 @@
                     }
                 };
 
+                $scope.GenerateMapLines = function() {
+                	try
+                	{
+                		for (i = 0; i < data.length; i++) {
+                  		forLines=[];
+                        var lat = data[i][0];
+                        var lng = data[i][1];
+                        //console.log(lat, lng)
+                        var loc = new google.maps.LatLng(lat, lng);
+                        forLines.push(loc);
+                        var lat = data[i+1][0];
+                        var lng = data[i+1][1];
+                        //console.log(lat, lng)
+                        var loc = new google.maps.LatLng(lat, lng);
+                        forLines.push(loc);
+                        var lineSymbol = {
+	    					path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+	  							};
+	                    var flightPath = new google.maps.Polyline({
+	    					path: forLines,
+	    					geodesic: true,
+	    					strokeColor: '#FF0000',
+	    					strokeOpacity: 1.0,
+	    					strokeWeight: 2,
+	    					icons: [{
+	      						icon: lineSymbol,
+	      					offset: '100%'
+	    					}]
+	  					});
+
+  						flightPath.setMap($scope.map);
+                    }
+                	}
+                	catch(err){
+                		console.log("awesome map!!");
+                	}
+                  	
+                   
+                   console.log(forLines.length);
+       //             	var lineSymbol = {
+    			// 		path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+  					// 		};
+       //              var flightPath = new google.maps.Polyline({
+    			// 		path: forLines,
+    			// 		geodesic: true,
+    			// 		strokeColor: '#FF0000',
+    			// 		strokeOpacity: 1.0,
+    			// 		strokeWeight: 2,
+    			// 		icons: [{
+      	// 					icon: lineSymbol,
+      	// 				offset: '100%'
+    			// 		}]
+  					// });
+
+  					// flightPath.setMap($scope.map);
+                };
+
+
                 //$interval($scope.GenerateMapMarkers, 2000);
                 $scope.GenerateMapMarkers();
+                $scope.GenerateMapLines();
 
             });
 
